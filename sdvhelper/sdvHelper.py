@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QFile
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QAction, QApplication, QHBoxLayout, QLabel, 
                              QMainWindow, QToolBar, QVBoxLayout, QWidget,
-                             QTabWidget)
+                             QTabWidget, QTableWidget, QAbstractItemView)
 
 
 class SdvHelper(QMainWindow):
@@ -12,7 +12,7 @@ class SdvHelper(QMainWindow):
 
     def __init__(self):
         """Initialize the settings of the main window"""
-        super(SdvHelper, self).__init__()
+        super().__init__()
         self.resize(800, 600)
         self.setFixedSize(self.size())
         self.setWindowTitle("sdvHelper")
@@ -30,13 +30,38 @@ class SdvHelper(QMainWindow):
         self.main_tabs = QTabWidget()
         self.setCentralWidget(self.main_tabs)
 
-        self.farming_tab = QWidget()
-        self.villagers_tab = QWidget()
-        self.collections_tab = QWidget()
+        self.main_tabs.addTab(FarmingTab(), "Farming")
+        self.main_tabs.addTab(VillagersTab(), "Villagers")
+        self.main_tabs.addTab(CollectionsTab(), "Collections")
 
-        self.main_tabs.addTab(self.farming_tab, "Farming")
-        self.main_tabs.addTab(self.villagers_tab, "Villagers")
-        self.main_tabs.addTab(self.collections_tab, "Collections")
+
+class FarmingTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.create_layout()
+        self.create_table()
+
+    def create_layout(self):
+        self.main_layout = QHBoxLayout()
+        self.setLayout(self.main_layout)
+
+    def create_table(self):
+        self.selection_table = QTableWidget()
+        self.selection_table.setColumnCount(2)
+        self.selection_table.setRowCount(3)
+        self.selection_table.horizontalHeader().setVisible(False)
+        self.selection_table.verticalHeader().setVisible(False)
+        self.selection_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+        self.main_layout.addWidget(self.selection_table)
+
+
+class VillagersTab(QWidget):
+    pass
+
+
+class CollectionsTab(QWidget):
+    pass
 
 
 def main():
